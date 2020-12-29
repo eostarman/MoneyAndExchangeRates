@@ -14,6 +14,7 @@ public struct MyCurrency: Decodable {
     public var rates: [String: Double] = [:]
 }
 
+@available(OSX 10.15, *)
 @available(iOS 13.0, *)
 public final class ExchangeRateService {
     public static var shared = ExchangeRateService()
@@ -121,6 +122,7 @@ public final class ExchangeRateService {
         return decoder
     }
 
+    @available(OSX 10.15, *)
     public func getDataFromServer(_ closure: @escaping (MyCurrency?) -> Void) {
         let decoder = ExchangeRateService.getDecoder()
 

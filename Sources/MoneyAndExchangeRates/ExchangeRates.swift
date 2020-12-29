@@ -49,7 +49,11 @@ public struct ExchangeRates: Codable {
             rate = getRate(from: currency, to: from.currency, date: date)
             if rate == 0 {
                 if #available(iOS 13.0, *) {
-                    rate = ExchangeRateService.getExchangeRateForTesting(from: from.currency, to: currency) ?? 0
+                    if #available(OSX 10.15, *) {
+                        rate = ExchangeRateService.getExchangeRateForTesting(from: from.currency, to: currency) ?? 0
+                    } else {
+                        // Fallback on earlier versions
+                    }
                 } else {
                     // Fallback on earlier versions
                     return nil
