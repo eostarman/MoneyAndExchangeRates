@@ -43,7 +43,7 @@ public struct MoneyWithoutCurrency: Codable {
     }
 
     public init?(_ string: String) {
-        var n = 0
+        var n: Int64 = 0
         var foundNegativeSign = false
         var foundDecimal = false
         var foundDigit = false
@@ -60,7 +60,7 @@ public struct MoneyWithoutCurrency: Codable {
             }
             if let digit = chr.wholeNumberValue {
                 foundDigit = true
-                n = n * 10 + digit
+                n = n * 10 + Int64(digit)
                 if foundDecimal {
                     digitsAfterDecimalPoint += 1
                 }

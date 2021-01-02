@@ -1,5 +1,10 @@
-import Combine
+
+
 import Foundation
+
+#if canImport(Combine)
+import Combine
+#endif
 
 public struct MyCurrency: Decodable {
     public var success: Bool
@@ -22,7 +27,9 @@ public final class ExchangeRateService {
 
     public static var accessKeyForFixerWebAPI: String? = "b8a607ac5119917e1a4d96f9d37b777d"
 
+    #if canImport(Combine)
     private var cancellable: AnyCancellable?
+    #endif
 
     enum TestFailureCondition: Error {
         case invalidServerResponse
@@ -122,7 +129,7 @@ public final class ExchangeRateService {
         return decoder
     }
 
-    @available(OSX 10.15, *)
+    #if canImport(Combine)
     public func getDataFromServer(_ closure: @escaping (MyCurrency?) -> Void) {
         let decoder = ExchangeRateService.getDecoder()
 
@@ -144,6 +151,7 @@ public final class ExchangeRateService {
             .replaceError(with: MyCurrency(success: false))
             .sink(receiveValue: { closure($0) })
     }
+    #endif
 
     public static func getTestJSONData() -> String {
         let jsonText = """
