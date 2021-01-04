@@ -181,6 +181,8 @@ public enum Currency: Int16, CaseIterable, Codable {
 
     public var symbol: String { Self.getSymbolForCurrencyCode(currencyCode: name) }
 
+    public var currencyNid: Int { Int(rawValue) }
+
     public var numberOfDecimals: Int {
         switch self {
         case .BIF, .CLP, .DJF, .GNF, .ISK, .JPY, .KMF, .KRW, .PYG, .RWF, .UGX, .UYI, .VND, .VUV, .XAF, .XOF, .XPF:
