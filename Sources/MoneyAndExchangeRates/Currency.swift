@@ -217,19 +217,19 @@ public extension Currency {
     }
 
     func amount(_ amount: Double) -> Money {
-        Money(amount: amount, currency: self)
+        Money(amount, self)
     }
 
     func amount(_ amount: Double, numberOfDecimals: Int) -> Money {
-        Money(amount: amount, currency: self, numberOfDecimals: numberOfDecimals)
+        Money(amount, self, numberOfDecimals: numberOfDecimals)
     }
 
     func amount(_ amount: Decimal) -> Money {
-        Money(amount: amount, currency: self)
+        Money(amount, self)
     }
 
     func amount(_ amount: Decimal, numberOfDecimals: Int) -> Money {
-        Money(amount: amount, currency: self, numberOfDecimals: numberOfDecimals)
+        Money(amount, self, numberOfDecimals: numberOfDecimals)
     }
 
     var zero: Money {

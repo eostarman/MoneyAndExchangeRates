@@ -66,7 +66,7 @@ public struct ExchangeRates: Codable {
             }
         }
 
-        let amount = Money(amount: from.amount * rate, currency: currency)
+        let amount = Money(from.amount * rate, currency)
         return amount
     }
 

@@ -65,7 +65,7 @@ public struct Money {
         rawValue = Int64(scaledAmount << 13) | Int64(currency.rawValue << 3) | Int64(numberOfDecimals)
     }
 
-    public init(amount: Decimal, currency: Currency, numberOfDecimals: Int? = nil) {
+    public init(_ amount: Decimal, _ currency: Currency, numberOfDecimals: Int? = nil) {
         let currencyRawValue = currency.rawValue
         let numberOfDecimals = numberOfDecimals ?? currency.numberOfDecimals
 
@@ -75,7 +75,7 @@ public struct Money {
         rawValue = (scaledAmount << 13) | Int64(currencyRawValue << 3) | Int64(numberOfDecimals)
     }
 
-    public init(amount: Double, currency: Currency, numberOfDecimals: Int? = nil) {
+    public init(_ amount: Double, _ currency: Currency, numberOfDecimals: Int? = nil) {
         let currencyRawValue = currency.rawValue
         let numberOfDecimals = numberOfDecimals ?? currency.numberOfDecimals
         let scale = Money.scales[numberOfDecimals]
@@ -100,7 +100,7 @@ public struct Money {
 
     /// return the amount rounded to the given number of decimals
     public func withDecimals(_ withDecimals: Int) -> Money {
-        Money(amount: decimalValue, currency: currency, numberOfDecimals: withDecimals)
+        Money(decimalValue, currency, numberOfDecimals: withDecimals)
 //        if scaledAmount == 0 {
 //            return Money(scaledAmount: 0, currencyRawValue: currencyRawValue, numberOfdecimals: withDecimals)
 //        } else if withDecimals > numberOfDecimals {
@@ -221,7 +221,7 @@ extension Money {
     public static func * (left: Money, double: Double) -> Money {
         let newAmount = left.amount * double
 
-        let result = Money(amount: newAmount, currency: left.currency, numberOfDecimals: left.numberOfDecimals)
+        let result = Money(newAmount, left.currency, numberOfDecimals: left.numberOfDecimals)
         return result
     }
 
