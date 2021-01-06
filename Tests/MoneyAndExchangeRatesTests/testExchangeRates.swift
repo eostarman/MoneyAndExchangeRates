@@ -10,7 +10,7 @@ import XCTest
 
 class testExchangeRates: XCTestCase {
     func testExchangeRates() {
-        let price = Money(amount: 1.0, currency: .USD)
+        let price = Money(1.0, .USD)
         let date = Date()
 
         var rates = ExchangeRates()
@@ -23,7 +23,7 @@ class testExchangeRates: XCTestCase {
     }
 
     func testReverseExchangeRates() {
-        let price = Money(amount: 1.23, currency: .ZAR)
+        let price = Money(1.23, .ZAR)
         let date = Date()
 
         var rates = ExchangeRates()

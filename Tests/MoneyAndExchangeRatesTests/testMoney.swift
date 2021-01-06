@@ -10,13 +10,13 @@ import XCTest
 
 class testMoney: XCTestCase {
     func testMoneyRoundTrip() {
-        let price = Money(amount: 1.23, currency: .USD)
+        let price = Money(1.23, .USD)
 
         XCTAssertEqual(price.amount, 1.23)
     }
 
     func testMoneySize() {
-        let price = Money(amount: 1.23, currency: .USD)
+        let price = Money(1.23, .USD)
         let decimalPrice = Decimal(0)
 
         XCTAssertEqual(MemoryLayout.size(ofValue: price), 8)
@@ -114,31 +114,31 @@ class testMoney: XCTestCase {
 
     func testRoundingDown() {
         let amountToRoundDown: Decimal = 1.234
-        let amount = Money(amount: amountToRoundDown, currency: .USD)
+        let amount = Money(amountToRoundDown, .USD)
         XCTAssertEqual(amount.decimalValue, Decimal(1.23))
     }
 
     func testRoundingUp() {
         let amountToRoundDown: Decimal = 1.235
-        let amount = Money(amount: amountToRoundDown, currency: .USD)
+        let amount = Money(amountToRoundDown, .USD)
         XCTAssertEqual(amount.decimalValue, Decimal(1.24))
     }
 
     func testRoundingUp2() {
         let amountToRoundDown: Decimal = 1.23499999
-        let amount = Money(amount: amountToRoundDown, currency: .USD)
+        let amount = Money(amountToRoundDown, .USD)
         XCTAssertEqual(amount.decimalValue, Decimal(1.23))
     }
 
     func testRoundingNegativeNumberDown() {
         let amountToRoundDown: Decimal = -1.234
-        let amount = Money(amount: amountToRoundDown, currency: .USD)
+        let amount = Money(amountToRoundDown, .USD)
         XCTAssertEqual(amount.decimalValue, Decimal(-1.23))
     }
 
     func testRoundingNegativeNumberUp() {
         let amountToRoundDown: Decimal = -1.235
-        let amount = Money(amount: amountToRoundDown, currency: .USD)
+        let amount = Money(amountToRoundDown, .USD)
         XCTAssertEqual(amount.decimalValue, Decimal(-1.24))
     }
 
@@ -176,7 +176,7 @@ class testMoney: XCTestCase {
 
     func testRoundingToNumberOfDecimals() {
         let originalAmount: Decimal = 1.235001
-        let amount1 = Money(amount: originalAmount, currency: .USD, numberOfDecimals: 4)
+        let amount1 = Money(originalAmount, .USD, numberOfDecimals: 4)
         XCTAssertEqual(amount1.scaledAmount, 12350)
 
         let amount2 = amount1.withDecimals(0)
@@ -187,9 +187,9 @@ class testMoney: XCTestCase {
     }
 
     func testEqualityOperator() {
-        let amount1 = Money(amount: 1.23, currency: .USD, numberOfDecimals: 4)
-        let amount2 = Money(amount: 1.23, currency: .USD, numberOfDecimals: 2)
-        let amount3 = Money(amount: 1.23, currency: .EUR, numberOfDecimals: 2)
+        let amount1 = Money(1.23, .USD, numberOfDecimals: 4)
+        let amount2 = Money(1.23, .USD, numberOfDecimals: 2)
+        let amount3 = Money(1.23, .EUR, numberOfDecimals: 2)
 
         XCTAssertEqual(amount1, amount1)
         XCTAssertEqual(amount1, amount2)
@@ -199,29 +199,29 @@ class testMoney: XCTestCase {
     }
 
     func testGreaterThanOperator() {
-        let amount1a = Money(amount: 1.23, currency: .USD, numberOfDecimals: 4)
-        let amount2a = Money(amount: 1.22, currency: .USD, numberOfDecimals: 2)
+        let amount1a = Money(1.23, .USD, numberOfDecimals: 4)
+        let amount2a = Money(1.22, .USD, numberOfDecimals: 2)
 
         XCTAssertTrue(amount1a > amount2a)
 
-        let amount1b = Money(amount: 1.23, currency: .USD, numberOfDecimals: 2)
-        let amount2b = Money(amount: 1.22, currency: .USD, numberOfDecimals: 4)
+        let amount1b = Money(1.23, .USD, numberOfDecimals: 2)
+        let amount2b = Money(1.22, .USD, numberOfDecimals: 4)
 
         XCTAssertTrue(amount1b > amount2b)
 
-        let amount1c = Money(amount: 1.23, currency: .USD, numberOfDecimals: 5)
-        let amount2c = Money(amount: 1.22, currency: .USD, numberOfDecimals: 5)
+        let amount1c = Money(1.23, .USD, numberOfDecimals: 5)
+        let amount2c = Money(1.22, .USD, numberOfDecimals: 5)
 
         XCTAssertTrue(amount1c > amount2c)
 
-        let amount1d = Money(amount: 1.22, currency: .USD, numberOfDecimals: 7)
-        let amount2d = Money(amount: 1.22, currency: .ZAR, numberOfDecimals: 7)
+        let amount1d = Money(1.22, .USD, numberOfDecimals: 7)
+        let amount2d = Money(1.22, .ZAR, numberOfDecimals: 7)
 
         XCTAssertTrue(amount1d > amount2d)
     }
 
     func testStringInterpolation() {
-        let amount = Money(amount: 1.23456, currency: .USD, numberOfDecimals: 4)
+        let amount = Money(1.23456, .USD, numberOfDecimals: 4)
         let text = "\(amount)"
 
         XCTAssertEqual(text, "USD1.2346")
