@@ -12,12 +12,12 @@ import XCTest
 class testExchangeRateService: XCTestCase {
     
     func testInitializingFromCache() throws {
-        let exchange = ExchangeRatesService.cachedRatesService
+        let exchange = ExchangeRatesService.cachedExchangeRatesService
         
         let money = Money(1.00, .EUR)
         let dollars = exchange.getMoney(from: money, to: .USD, date: Date())
         
-        XCTAssertEqual(dollars, Money(1.18, .USD))
+        XCTAssertEqual(dollars, Money(1.22, .USD))
     }
     
     func testStorageOfMultipleRates() {

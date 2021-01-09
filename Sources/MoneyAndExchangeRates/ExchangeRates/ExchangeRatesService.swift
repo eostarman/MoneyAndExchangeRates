@@ -3,12 +3,14 @@ import Foundation
 public final class ExchangeRatesService: Codable {
     var allRates: [Key: [ExchangeRate]] = [:]
     
+    public var isEmpty: Bool { allRates.isEmpty }
+    
     struct Key: Codable, Hashable {
         let from: Currency
         let to: Currency
     }
     
-    static var cachedRatesService: ExchangeRatesService {
+    public static var cachedExchangeRatesService: ExchangeRatesService {
         var allRates: [ExchangeRate] = []
         
         let fixer = ExchangeRatesFixerService.cachedExchangeRatesFromFixer
