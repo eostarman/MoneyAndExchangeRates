@@ -209,6 +209,21 @@ public enum Currency: Int16, CaseIterable, Codable {
             return 2
         }
     }
+    
+    private static var cachedLookup: [String: Currency] = [:]
+    
+    init?(string: String) {
+        if Self.cachedLookup.isEmpty {
+            Self.cachedLookup = Dictionary(uniqueKeysWithValues: Self.allCases.map { ("\($0)", $0) })
+        }
+        
+        if let currency = Self.cachedLookup[string] {
+            self = currency
+            return
+        } else {
+            return nil
+        }
+    }
 }
 
 public extension Currency {

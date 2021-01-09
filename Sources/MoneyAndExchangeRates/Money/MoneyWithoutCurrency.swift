@@ -173,6 +173,23 @@ extension MoneyWithoutCurrency {
     public static prefix func - (amount: MoneyWithoutCurrency) -> MoneyWithoutCurrency {
         MoneyWithoutCurrency(scaledAmount: -amount.scaledAmount, numberOfDecimals: amount.numberOfDecimals)
     }
+    
+    /// Return the amount scaled to have a specific number of decimal places
+    /// - Parameter numberOfDecimals: the required number of decimals
+    /// - Returns: the value with a scaled value that has the required number of decimals. If some precision is lost, the value is truncated - not rounded
+    public func scaledTo(numberOfDecimals: Int) -> MoneyWithoutCurrency {
+        if numberOfDecimals == self.numberOfDecimals {
+            return self
+        } else if numberOfDecimals > self.numberOfDecimals {
+            let multiplyBy = Self.intScales[numberOfDecimals - self.numberOfDecimals]
+            let newScaledAmount = scaledAmount * multiplyBy
+            return MoneyWithoutCurrency(scaledAmount: newScaledAmount, numberOfDecimals: numberOfDecimals)
+        } else {
+            let divideBy = Self.intScales[self.numberOfDecimals - numberOfDecimals]
+            let newScaledAmount = self.scaledAmount / divideBy
+            return MoneyWithoutCurrency(scaledAmount: newScaledAmount, numberOfDecimals: numberOfDecimals)
+        }
+    }
 
     public static func + (left: MoneyWithoutCurrency, right: MoneyWithoutCurrency?) -> MoneyWithoutCurrency {
         guard let right = right else {
