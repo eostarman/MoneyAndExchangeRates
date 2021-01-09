@@ -210,13 +210,9 @@ public enum Currency: Int16, CaseIterable, Codable {
         }
     }
     
-    private static var cachedLookup: [String: Currency] = [:]
+    private static var cachedLookup: [String: Currency] = Dictionary(uniqueKeysWithValues: Self.allCases.map { ("\($0)", $0) })
     
     init?(string: String) {
-        if Self.cachedLookup.isEmpty {
-            Self.cachedLookup = Dictionary(uniqueKeysWithValues: Self.allCases.map { ("\($0)", $0) })
-        }
-        
         if let currency = Self.cachedLookup[string] {
             self = currency
             return
