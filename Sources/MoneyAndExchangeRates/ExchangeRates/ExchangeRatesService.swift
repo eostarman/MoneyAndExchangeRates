@@ -1,20 +1,20 @@
 import Foundation
 
 public final class ExchangeRatesService: Codable {
-    static var allRates: [Key: [ExchangeRate]] = [:]
+    var allRates: [Key: [ExchangeRate]] = [:]
     
     struct Key: Codable, Hashable {
         let from: Currency
         let to: Currency
     }
     
-    static func initializeFromCache() {
-        allRates = [:]
+    static var cachedRatesService: ExchangeRatesService {
+        var allRates: [ExchangeRate] = []
         
         let fixer = ExchangeRatesFixerService.cachedExchangeRatesFromFixer
         
         guard let fromCurrency = Currency(string: fixer.base) else {
-            return
+            return ExchangeRatesService()
         }
         
         let date = fixer.date
@@ -26,15 +26,21 @@ public final class ExchangeRatesService: Codable {
             
             let rate = x.value
             
-            add(ExchangeRate(from: fromCurrency, to: toCurrency, date: date, rate: rate))
+            allRates.append(ExchangeRate(from: fromCurrency, to: toCurrency, date: date, rate: rate))
         }
+        
+        return ExchangeRatesService(allRates)
     }
     
-    static func initialize(_ rates: ExchangeRate ...) {
-        initialize(rates)
+    public init() {
+        
     }
     
-    static func initialize(_ rates: [ExchangeRate]) {
+    public convenience init(_ rates: ExchangeRate ...) {
+        self.init(rates)
+    }
+    
+    public init(_ rates: [ExchangeRate]) {
         allRates = [:]
         
         for rate in rates {
@@ -42,11 +48,11 @@ public final class ExchangeRatesService: Codable {
         }
     }
     
-    public static func getRates(from: Currency, to: Currency) -> [ExchangeRate] {
+    public func getRates(from: Currency, to: Currency) -> [ExchangeRate] {
         allRates[Key(from: from, to: to)] ?? []
     }
     
-    public static func getRate(from: Currency, to: Currency, date: Date) -> Double? {
+    public func getRate(from: Currency, to: Currency, date: Date) -> Double? {
         
         guard let rates = allRates[Key(from: from, to: to)] else {
             return nil
@@ -84,7 +90,7 @@ public final class ExchangeRatesService: Codable {
         return nil
     }
     
-    public static func getMoney(from: Money, to newCurrency: Currency, date: Date) -> Money? {
+    public func getMoney(from: Money, to newCurrency: Currency, date: Date) -> Money? {
         if from.currency == newCurrency {
             return from
         }
@@ -101,7 +107,7 @@ public final class ExchangeRatesService: Codable {
     }
     
     /// Add the exchange rate from one currency to another on a particular date, replacing any prior entry with the same from/to/date.
-    public static func add(_ exchangeRate: ExchangeRate) {
+    public func add(_ exchangeRate: ExchangeRate) {
         guard exchangeRate.rate > 0.0 else {
             return
         }
