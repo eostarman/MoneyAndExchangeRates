@@ -167,6 +167,10 @@ public struct MoneyWithoutCurrency: Codable {
             return left.scaledAmount * scale > right.scaledAmount
         }
     }
+    
+    public static func < (left: MoneyWithoutCurrency, right: MoneyWithoutCurrency) -> Bool {
+        return right > left
+    }
 }
 
 extension MoneyWithoutCurrency {
