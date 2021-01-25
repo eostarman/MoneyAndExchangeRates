@@ -11,7 +11,7 @@ enum MoneyDecodingError: Error {
     case badAmount(String)
 }
 
-public struct MoneyWithoutCurrency: Codable {
+public struct MoneyWithoutCurrency: Codable, Hashable {
     let rawValue: Int64
 
     public static let zero = MoneyWithoutCurrency(scaledAmount: 0, numberOfDecimals: 0)

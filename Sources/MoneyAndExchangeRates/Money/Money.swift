@@ -1,7 +1,7 @@
 
 import Foundation
 
-public struct Money {
+public struct Money: Codable, Hashable {
     let rawValue: Int64
 
     public static let zeroUSD = Money(scaledAmount: 0, numberOfDecimals: 0, currency: .USD)
