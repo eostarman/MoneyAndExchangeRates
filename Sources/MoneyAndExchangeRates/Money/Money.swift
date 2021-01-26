@@ -92,6 +92,10 @@ public struct Money: Codable, Hashable {
     private init(scaledAmount: Int64, currencyRawValue: Int64, numberOfDecimals: Int) {
         rawValue = (scaledAmount << 13) | (currencyRawValue << 3) | Int64(numberOfDecimals)
     }
+    
+    public func withoutCurrency() -> MoneyWithoutCurrency {
+        MoneyWithoutCurrency(scaledAmount: scaledAmount, numberOfDecimals: numberOfDecimals)
+    }
 
     /// return the amount rounded to the standard number of decimals for the given currency (e.g. 2-decimals for USD, EUR and ZAR)
     public func withStandardNumberOfDecimalsForCurrency() -> Money {
