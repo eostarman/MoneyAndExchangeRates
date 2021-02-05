@@ -261,12 +261,29 @@ extension MoneyWithoutCurrency {
 
 extension MoneyWithoutCurrency: CustomDebugStringConvertible {
     public var debugDescription: String {
-        decimalValue.description
+        "\(self)"
     }
 }
 
 extension String.StringInterpolation {
     public mutating func appendInterpolation(_ value: MoneyWithoutCurrency) {
-        appendInterpolation("\(value.decimalValue)")
+        
+        if value.scaledAmount == 0 {
+            appendLiteral("0.00")
+            return
+        }
+        
+        var numberOfDecimals = value.numberOfDecimals
+        if numberOfDecimals == 4 && value.scaledAmount % 100 == 0 {
+            numberOfDecimals = 2
+        }
+        
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = numberOfDecimals
+        formatter.maximumFractionDigits = numberOfDecimals
+        let formattedAmount = formatter.string(from: value.decimalValue as NSNumber)!
+        
+        appendInterpolation(formattedAmount)
     }
 }
