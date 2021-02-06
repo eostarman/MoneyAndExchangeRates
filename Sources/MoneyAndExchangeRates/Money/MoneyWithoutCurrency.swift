@@ -247,15 +247,17 @@ extension MoneyWithoutCurrency {
         left * (1.0 / Double(divisor))
     }
 
+    /// the result is 4 decimals
     public static func * (left: MoneyWithoutCurrency, double: Double) -> MoneyWithoutCurrency {
         let newAmount = left.amount * double
 
-        let result = MoneyWithoutCurrency(amount: newAmount, numberOfDecimals: left.numberOfDecimals)
+        let result = MoneyWithoutCurrency(amount: newAmount, numberOfDecimals: 4)
         return result
     }
 
+    /// the result is 4 decimals
     public static func * (qty: Int, right: MoneyWithoutCurrency) -> MoneyWithoutCurrency {
-        MoneyWithoutCurrency(scaledAmount: right.scaledAmount * Int64(qty), numberOfDecimals: right.numberOfDecimals)
+        MoneyWithoutCurrency(scaledAmount: right.scaledAmount * Int64(qty), numberOfDecimals: 4)
     }
 }
 

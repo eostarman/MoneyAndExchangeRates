@@ -222,15 +222,17 @@ extension Money {
         left * (1.0 / Double(divisor))
     }
 
+    /// the result is 4 decimals
     public static func * (left: Money, double: Double) -> Money {
         let newAmount = left.amount * double
 
-        let result = Money(newAmount, left.currency, numberOfDecimals: left.numberOfDecimals)
+        let result = Money(newAmount, left.currency, numberOfDecimals: 4)
         return result
     }
 
+    /// the result is 4 decimals
     public static func * (qty: Int, right: Money) -> Money {
-        Money(scaledAmount: right.scaledAmount * Int64(qty), currencyRawValue: right.currencyRawValue, numberOfDecimals: right.numberOfDecimals)
+        Money(scaledAmount: right.scaledAmount * Int64(qty), currencyRawValue: right.currencyRawValue, numberOfDecimals: 4)
     }
 }
 
