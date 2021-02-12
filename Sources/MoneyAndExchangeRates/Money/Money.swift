@@ -221,18 +221,23 @@ extension Money {
     public static func / (left: Money, divisor: Int) -> Money {
         left * (1.0 / Double(divisor))
     }
-
-    /// the result is 4 decimals
-    public static func * (left: Money, double: Double) -> Money {
-        let newAmount = left.amount * double
-
-        let result = Money(newAmount, left.currency, numberOfDecimals: 4)
-        return result
+    
+    /// since x / int will be rounded to 4 decimals, this gives a bit more control
+    public func divided(by divisor: Int, numberOfDecimals: Int) -> Money {
+        Money(amount * (1.0 / Double(divisor)), currency, numberOfDecimals: numberOfDecimals)
     }
 
     /// the result is 4 decimals
+    public static func * (left: Money, double: Double) -> Money {
+        Money(left.amount * double, left.currency, numberOfDecimals: 4)
+    }
+
     public static func * (qty: Int, right: Money) -> Money {
-        Money(scaledAmount: right.scaledAmount * Int64(qty), currencyRawValue: right.currencyRawValue, numberOfDecimals: 4)
+        Money(scaledAmount: right.scaledAmount * Int64(qty), currencyRawValue: right.currencyRawValue, numberOfDecimals: right.numberOfDecimals)
+    }
+    
+    public static func * (left: Money, qty: Int) -> Money {
+        Money(scaledAmount: left.scaledAmount * Int64(qty), currencyRawValue: left.currencyRawValue, numberOfDecimals: left.numberOfDecimals)
     }
 }
 
