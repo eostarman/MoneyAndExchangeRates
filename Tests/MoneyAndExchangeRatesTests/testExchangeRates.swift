@@ -15,7 +15,7 @@ class testExchangeRates: XCTestCase {
         
         let exchange = ExchangeRatesService(ExchangeRate(from: .USD, to: .ZAR, date: date, rate: 1.23))
 
-        let newPrice = exchange.getMoney(from: price, to: .ZAR, date: date)
+        let newPrice = exchange.getMoney(from: price, to: .ZAR, date: date, numberOfDecimals: 2)
         let newAmount = newPrice?.amount
 
         XCTAssertEqual(newAmount, 1.23)
@@ -27,7 +27,7 @@ class testExchangeRates: XCTestCase {
 
         let exchange = ExchangeRatesService(ExchangeRate(from: .USD, to: .ZAR, date: date, rate: 1.2302))
 
-        let newPrice = exchange.getMoney(from: price, to: .USD, date: date)
+        let newPrice = exchange.getMoney(from: price, to: .USD, date: date, numberOfDecimals: 2)
         let newAmount = newPrice?.amount
 
         XCTAssertEqual(newAmount, 1.00)

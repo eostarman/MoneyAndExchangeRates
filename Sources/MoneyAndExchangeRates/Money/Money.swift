@@ -77,7 +77,7 @@ public struct Money: Codable, Hashable {
 
     public init(_ amount: Double, _ currency: Currency, numberOfDecimals: Int? = nil) {
         let currencyRawValue = currency.rawValue
-        let numberOfDecimals = numberOfDecimals ?? currency.numberOfDecimals
+        let numberOfDecimals = numberOfDecimals ?? min(7, max(currency.numberOfDecimals, amount.decimalCount())) // we have 3-bits to store the numberOfDecimals
         let scale = Money.scales[numberOfDecimals]
 
         let scaledAmount = Int64((amount * scale).rounded())
@@ -103,25 +103,8 @@ public struct Money: Codable, Hashable {
     }
 
     /// return the amount rounded to the given number of decimals
-    public func withDecimals(_ withDecimals: Int) -> Money {
-        Money(decimalValue, currency, numberOfDecimals: withDecimals)
-//        if scaledAmount == 0 {
-//            return Money(scaledAmount: 0, currencyRawValue: currencyRawValue, numberOfdecimals: withDecimals)
-//        } else if withDecimals > numberOfDecimals {
-//            let scale = Money.intScales[withDecimals - numberOfDecimals]
-//            let newScaledAmount = scaledAmount * scale
-//            return Money(scaledAmount: newScaledAmount, currencyRawValue: currencyRawValue, numberOfdecimals: withDecimals)
-//        } else if withDecimals < numberOfDecimals {
-//            let remove = numberOfDecimals - withDecimals
-//            let scale = Money.intScales[remove - 1]
-//            var newScaledAmount = scaledAmount / scale
-//            newScaledAmount += newScaledAmount > 0 ? 5 : -5
-//            newScaledAmount /= 10
-//
-//            return Money(scaledAmount: newScaledAmount, currencyRawValue: currencyRawValue, numberOfdecimals: withDecimals)
-//        } else {
-//            return self
-//        }
+    public func withDecimals(_ numberOfDecimals: Int) -> Money {
+        Money(decimalValue, currency, numberOfDecimals: numberOfDecimals)
     }
 }
 

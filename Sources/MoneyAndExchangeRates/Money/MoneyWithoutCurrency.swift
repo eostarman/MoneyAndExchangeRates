@@ -118,6 +118,7 @@ public struct MoneyWithoutCurrency: Codable, Hashable {
     }
 
     public init(amount: Decimal, numberOfDecimals: Int) {
+        let numberOfDecimals = min(7, numberOfDecimals) // only 3-bits to store this (intentionally - this is, after all, currency
         let scaledDecimalAmount = (amount * Decimal(Money.intScales[numberOfDecimals])).rounded(0) as NSDecimalNumber
         let scaledAmount = scaledDecimalAmount.int64Value
 
@@ -126,6 +127,7 @@ public struct MoneyWithoutCurrency: Codable, Hashable {
     }
 
     public init(amount: Double, numberOfDecimals: Int) {
+        let numberOfDecimals = min(7, numberOfDecimals) // only 3-bits to store this (intentionally - this is, after all, currency
         let scale = Money.scales[numberOfDecimals]
 
         let scaledAmount = Int64((amount * scale).rounded())
@@ -292,5 +294,11 @@ extension String.StringInterpolation {
         let formattedAmount = formatter.string(from: value.decimalValue as NSNumber)!
         
         appendInterpolation(formattedAmount)
+    }
+}
+
+extension MoneyWithoutCurrency: ExpressibleByFloatLiteral {
+    public init(floatLiteral value: Double) {
+        self = MoneyWithoutCurrency(amount: value, numberOfDecimals: value.decimalCount())
     }
 }

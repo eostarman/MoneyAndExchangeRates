@@ -26,9 +26,9 @@ class testMoney: XCTestCase {
     func testDivideByThree() {
         let price = Currency.USD.amount(10.00)
 
-        XCTAssertEqual(price / 3, price.currency.amount(3.33))
+        XCTAssertEqual(price / 3, price.currency.amount(3.3333))
 
-        XCTAssertEqual(price / 3.0, price.currency.amount(3.33))
+        XCTAssertEqual(price / 3.0, price.currency.amount(3.3333))
     }
 
     func testDivideByThreeWithFourDecimals() {
@@ -49,15 +49,17 @@ class testMoney: XCTestCase {
     func testMultiplySixthToTwoDecimals() {
         let price = Currency.USD.amount(10.00)
         let sixth = 1.0 / 6.0
-
-        XCTAssertEqual(price * sixth, price.currency.amount(1.67))
+        let result = (price * sixth).withDecimals(2)
+        
+        XCTAssertEqual(result, price.currency.amount(1.67))
     }
 
     func testMultiplySixthToFourDecimals() {
-        let price = Currency.USD.amount(10.00, numberOfDecimals: 4)
+        let price = Currency.USD.amount(10.00)
         let sixth = 1.0 / 6.0
+        let result = (price * sixth).withDecimals(4)
 
-        XCTAssertEqual(price * sixth, price.currency.amount(1.6667, numberOfDecimals: 4))
+        XCTAssertEqual(result, price.currency.amount(1.6667, numberOfDecimals: 4))
     }
 
     func testMultiplyByQty() {

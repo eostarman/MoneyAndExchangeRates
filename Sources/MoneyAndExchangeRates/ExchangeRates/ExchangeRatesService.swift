@@ -92,17 +92,17 @@ public final class ExchangeRatesService: Codable {
         return nil
     }
     
-    public func getMoney(from: Money, to newCurrency: Currency, date: Date) -> Money? {
+    public func getMoney(from: Money, to newCurrency: Currency, date: Date, numberOfDecimals: Int) -> Money? {
         if from.currency == newCurrency {
             return from
         }
         
         if let rate = getRate(from: from.currency, to: newCurrency, date: date), rate > 0 {
-            return Money(from.amount * rate, newCurrency)
+            return Money(from.amount * rate, newCurrency, numberOfDecimals: numberOfDecimals)
         }
         
         if let reverseRate = getRate(from: newCurrency, to: from.currency, date: date), reverseRate > 0 {
-            return Money(from.amount / reverseRate, newCurrency)
+            return Money(from.amount / reverseRate, newCurrency, numberOfDecimals: numberOfDecimals)
         }
 
         return nil

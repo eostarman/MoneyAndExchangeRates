@@ -15,7 +15,7 @@ class testExchangeRateService: XCTestCase {
         let exchange = ExchangeRatesService.cachedExchangeRatesService
         
         let money = Money(1.00, .EUR)
-        let dollars = exchange.getMoney(from: money, to: .USD, date: Date())
+        let dollars = exchange.getMoney(from: money, to: .USD, date: Date(), numberOfDecimals: 2)
         
         XCTAssertEqual(dollars, Money(1.22, .USD))
     }
