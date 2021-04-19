@@ -106,6 +106,11 @@ public struct Money: Codable, Hashable {
     public func withDecimals(_ numberOfDecimals: Int) -> Money {
         Money(decimalValue, currency, numberOfDecimals: numberOfDecimals)
     }
+    
+    public var formattedAs2Or4Decimals: String {
+        let money = MoneyWithoutCurrency(scaledAmount: scaledAmount, numberOfDecimals: numberOfDecimals)
+        return money.formattedAs2Or4Decimals
+    }
 }
 
 extension Money: Equatable {
@@ -211,16 +216,34 @@ extension Money {
     }
 
     /// the result is 4 decimals
-    public static func * (left: Money, double: Double) -> Money {
-        Money(left.amount * double, left.currency, numberOfDecimals: 4)
+    public static func * (money: Money, double: Double) -> Money {
+        Money(money.amount * double, money.currency, numberOfDecimals: 4)
     }
-
-    public static func * (qty: Int, right: Money) -> Money {
-        Money(scaledAmount: right.scaledAmount * Int64(qty), currencyRawValue: right.currencyRawValue, numberOfDecimals: right.numberOfDecimals)
+    public static func * (double: Double, money: Money) -> Money {
+        Money(money.amount * double, money.currency, numberOfDecimals: 4)
+    }
+    public static func * (qty: Int, money: Money) -> Money {
+        Money(scaledAmount: money.scaledAmount * Int64(qty), currencyRawValue: money.currencyRawValue, numberOfDecimals: money.numberOfDecimals)
     }
     
-    public static func * (left: Money, qty: Int) -> Money {
-        Money(scaledAmount: left.scaledAmount * Int64(qty), currencyRawValue: left.currencyRawValue, numberOfDecimals: left.numberOfDecimals)
+    public static func * (money: Money, qty: Int) -> Money {
+        Money(scaledAmount: money.scaledAmount * Int64(qty), currencyRawValue: money.currencyRawValue, numberOfDecimals: money.numberOfDecimals)
+    }
+}
+
+extension Optional where Wrapped == Money {
+    public static func * (qty: Int, money: Money?) -> Money? {
+        guard let money = money else {
+            return nil
+        }
+        return Money(scaledAmount: money.scaledAmount * Int64(qty), numberOfDecimals: money.numberOfDecimals, currency: money.currency)
+    }
+    
+    public static func * (money: Money?, qty: Int) -> Money? {
+        guard let money = money else {
+            return nil
+        }
+        return Money(scaledAmount: money.scaledAmount * Int64(qty), numberOfDecimals: money.numberOfDecimals, currency: money.currency)
     }
 }
 
