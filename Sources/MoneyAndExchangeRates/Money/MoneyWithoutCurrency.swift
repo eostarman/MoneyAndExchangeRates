@@ -155,6 +155,7 @@ public struct MoneyWithoutCurrency: Codable, Hashable {
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = numberOfDecimals
         formatter.maximumFractionDigits = numberOfDecimals
+        formatter.usesGroupingSeparator = false
         let formattedAmount = formatter.string(from: decimalValue as NSNumber)!
         return formattedAmount
     }
