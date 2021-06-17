@@ -12,7 +12,7 @@
 
 import Foundation
 
-public enum Currency: Int16, CaseIterable, Codable {
+public enum Currency: Int16, CaseIterable, Codable, Equatable {
     case AFN = 971 // Afghani (minor=2)
     case DZD = 012 // Algerian Dinar (minor=2)
     case ARS = 032 // Argentine Peso (minor=2)
@@ -219,6 +219,12 @@ public enum Currency: Int16, CaseIterable, Codable {
         } else {
             return nil
         }
+    }
+}
+
+extension Currency: Identifiable {
+    public var id: Int {
+        Int(rawValue)
     }
 }
 
